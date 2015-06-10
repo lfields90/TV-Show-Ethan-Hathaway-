@@ -16,6 +16,44 @@ feature "user adds a new TV show" do
   # * If any of the above validations fail, the form should be
   #   re-displayed with the failing validation message.
 
-  pending "successfully add a new show"
-  pending "fail to add a show with invalid information"
+
+  # before(:all) do
+  #   create(:idea)
+  #   visit root_path
+  #   click_link "Log In"
+  # end
+
+
+  scenario "successfully add a new show" do
+    visit '/'
+    expect(page).to have_content("TV Shows")
+    click_link("Add New Show")
+    expect(page).to have_content("Add Show")
+    fill_in('Title', with: 'Aviato')
+    fill_in('Network', with: 'Showtime')
+    fill_in('Starting Year', with: '2014')
+    fill_in('Ending Year', with: '2014')
+    select('Comedy', from: 'Genre')
+    fill_in('Synopsis', with: 'Airplanes that run on water')
+    click_on('Add TV Show')
+    expect(page).to have_content("TV Shows")
+    expect(page).to have_content("Aviato (Showtime)")
+    expect(page).to_not have_content('Add Show')
+  end
+  scenario "fail to add a show with invalid information" do
+    visit '/'
+    expect(page).to have_content("TV Shows")
+    click_link("Add New Show")
+    expect(page).to have_content("Add Show")
+    fill_in('Title', with: 'Hooli')
+    fill_in('Network', with: 'Cinemax')
+    fill_in('Starting Year', with: 'First Year')
+    fill_in('Ending Year', with: 'Never')
+    select('Drama', from: 'Genre')
+    fill_in('Synopsis', with: 'Trying to take over the world')
+    click_on('Add TV Show')
+    expect(page).to_not have_css('.flash')
+    expect(page).to have_content('Add Show')
+  end
+
 end

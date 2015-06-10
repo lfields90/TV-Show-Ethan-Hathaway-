@@ -39,6 +39,31 @@ feature "user views list of TV shows" do
   # * If the end year is not provided it should indicate that the show is still
   #   running.
 
-  pending "view details for a TV show"
-  pending "view details for a TV show with missing information"
+
+  # scenario "view details for a TV show" do
+  #   visit "/television_shows"
+  #   expect(page).to have_content("TV Shows")
+  #   click_link("Aviato (Showtime)")
+  #   expect(page).to have_content("Airplanes that run on water")
+  #   expect(page).to_not have_content('Back to all shows')
+  # end
+
+  scenario "view details for a TV show" do
+    visit "/television_shows"
+    expect(page).to have_content("TV Shows")
+    expect(page).to have_content("Aviato (Showtime)")
+    visit "/television_shows/18"
+    expect(page).to have_content("Airplanes that run on water")
+  end
+
+  scenario "view details for a TV show with missing information" do
+    rand = rand(15..17)
+    visit "/television_shows"
+    expect(page).to have_content("TV Shows")
+    expect(page).to have_content("Game of Thrones (HBO)")
+    visit "/television_shows/#{rand}"
+    expect(page).to have_content("Network")
+    expect(page).to have_content("Years")
+    expect(page).to have_content("Genre")
+  end
 end
